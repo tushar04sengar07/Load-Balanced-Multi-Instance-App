@@ -1,0 +1,10 @@
+{
+  "name": "load-balanced-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "start": "node app.js",
+  "test": "jest"
+}
+}
