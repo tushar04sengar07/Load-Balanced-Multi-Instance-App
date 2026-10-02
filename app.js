@@ -1,22 +1,26 @@
 const express = require('express');
-const os = require('os');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Health check endpoint (Required for AWS Load Balancer)
+// Use the SERVER_NAME environment variable, default to "Server 1"
+const serverName = process.env.SERVER_NAME || 'Server 1';
+
 app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'healthy' });
+    res.status(200).json({ status: 'healthy', server: serverName });
 });
 
-// Main endpoint
 app.get('/', (req, res) => {
-    res.send(`Hello from Instance: ${os.hostname()}!`);
+    res.send(`Hello from ${serverName}!`);
 });
 
-// Only listen if this file is run directly (allows testing)
+// 404 handler for unknown routes
+app.use((req, res) => {
+    res.status(404).send('Not Found');
+});
+
 if (require.main === module) {
     app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
+        console.log(`${serverName} is running on port ${PORT}`);
     });
 }
 
